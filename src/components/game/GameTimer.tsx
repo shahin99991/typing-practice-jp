@@ -1,62 +1,62 @@
-import { useEffect, useState } from 'react'
-import { Box, LinearProgress, Typography } from '@mui/material'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from '../../store'
-import { setGameActive } from '../../store/typingSlice'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Box, LinearProgress, Typography } from '@mui/material';
+import { setGameActive } from '../../store/typingSlice';
+import { RootState } from '../../store';
 
-const GAME_TIME = 60 // 60秒
+const GAME_TIME = 60; // 60秒
 
-const GameTimer = () => {
-  const dispatch = useDispatch()
-  const [timeLeft, setTimeLeft] = useState(GAME_TIME)
-  const { isGameActive, gameMode } = useSelector((state: RootState) => state.typing)
+export const GameTimer: React.FC = () => {
+  const [timeLeft, setTimeLeft] = useState(GAME_TIME);
+  const isGameActive = useSelector((state: RootState) => state.typing.isGameActive);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null
+    let timer: number | undefined;
 
-    if (isGameActive && gameMode === 'timeAttack') {
-      timer = setInterval(() => {
-        setTimeLeft((prevTime) => {
-          if (prevTime <= 1) {
-            // 時間切れの場合
-            if (timer) clearInterval(timer)
-            dispatch(setGameActive(false))
-            return 0
+    if (isGameActive && timeLeft > 0) {
+      timer = window.setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            dispatch(setGameActive(false));
+            return 0;
           }
-          return prevTime - 1
-        })
-      }, 1000)
-    } else {
-      setTimeLeft(GAME_TIME)
+          return prev - 1;
+        });
+      }, 1000);
     }
 
     return () => {
-      if (timer) clearInterval(timer)
-    }
-  }, [isGameActive, gameMode, dispatch])
+      if (timer) {
+        clearInterval(timer);
+      }
+    };
+  }, [isGameActive, timeLeft, dispatch]);
 
-  // プログレスバーの色を残り時間に応じて変更
+  useEffect(() => {
+    if (!isGameActive) {
+      setTimeLeft(GAME_TIME);
+    }
+  }, [isGameActive]);
+
+  const progress = (timeLeft / GAME_TIME) * 100;
   const getColor = () => {
-    if (timeLeft > 30) return 'primary'
-    if (timeLeft > 10) return 'warning'
-    return 'error'
-  }
+    if (timeLeft > 30) return 'primary';
+    if (timeLeft > 10) return 'warning';
+    return 'error';
+  };
 
   return (
-    <Box sx={{ width: '100%', mb: 4 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1 }}>
-        <Typography variant="h6" color={getColor()}>
-          残り時間: {timeLeft}秒
-        </Typography>
-      </Box>
+    <Box sx={{ width: '100%', mb: 2 }}>
+      <Typography variant="h6" align="center" gutterBottom>
+        残り時間: {timeLeft}秒
+      </Typography>
       <LinearProgress
         variant="determinate"
-        value={(timeLeft / GAME_TIME) * 100}
+        value={progress}
         color={getColor()}
         sx={{ height: 10, borderRadius: 5 }}
       />
     </Box>
-  )
-}
-
-export default GameTimer 
+  );
+}; 

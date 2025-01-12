@@ -1,48 +1,16 @@
-import { Box, Paper, Typography } from '@mui/material'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../store'
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Box, Typography } from '@mui/material';
+import { RootState } from '../../store';
 
-const ScoreDisplay = () => {
-  const { wpm, accuracy } = useSelector((state: RootState) => state.typing)
+export const ScoreDisplay: React.FC = () => {
+  const correctCount = useSelector((state: RootState) => state.typing.correctCount);
 
   return (
-    <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
-      <Paper
-        elevation={3}
-        sx={{
-          flex: 1,
-          p: 2,
-          textAlign: 'center',
-          backgroundColor: 'primary.main',
-          color: 'white',
-        }}
-      >
-        <Typography variant="h6" component="div">
-          入力速度
-        </Typography>
-        <Typography variant="h4" component="div">
-          {wpm} WPM
-        </Typography>
-      </Paper>
-      <Paper
-        elevation={3}
-        sx={{
-          flex: 1,
-          p: 2,
-          textAlign: 'center',
-          backgroundColor: 'secondary.main',
-          color: 'white',
-        }}
-      >
-        <Typography variant="h6" component="div">
-          正確性
-        </Typography>
-        <Typography variant="h4" component="div">
-          {accuracy}%
-        </Typography>
-      </Paper>
+    <Box sx={{ textAlign: 'center', my: 2 }}>
+      <Typography variant="h5" color="primary">
+        正解数: {correctCount}
+      </Typography>
     </Box>
-  )
-}
-
-export default ScoreDisplay 
+  );
+}; 

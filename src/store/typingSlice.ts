@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 interface TypingState {
   currentText: string
   targetText: string
-  gameMode: 'timeAttack' | 'scoreAttack' | 'endless'
+  gameMode: 'timeAttack'
   difficulty: 'beginner' | 'intermediate' | 'advanced'
   isGameActive: boolean
   correctCount: number
@@ -28,10 +28,10 @@ export const typingSlice = createSlice({
     setTargetText: (state, action: PayloadAction<string>) => {
       state.targetText = action.payload
     },
-    setGameMode: (state, action: PayloadAction<TypingState['gameMode']>) => {
+    setGameMode: (state, action: PayloadAction<'timeAttack'>) => {
       state.gameMode = action.payload
     },
-    setDifficulty: (state, action: PayloadAction<TypingState['difficulty']>) => {
+    setDifficulty: (state, action: PayloadAction<'beginner' | 'intermediate' | 'advanced'>) => {
       state.difficulty = action.payload
     },
     setGameActive: (state, action: PayloadAction<boolean>) => {
@@ -45,6 +45,7 @@ export const typingSlice = createSlice({
     },
     resetGame: (state) => {
       state.currentText = ''
+      state.targetText = ''
       state.isGameActive = false
       state.correctCount = 0
     },
