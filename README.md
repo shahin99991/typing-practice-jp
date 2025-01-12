@@ -26,7 +26,7 @@
 
 ```bash
 # リポジトリのクローン
-git clone https://github.com/[your-username]/typing-practice.git
+git clone https://github.com/shahin99991/typing-practice-jp.git
 
 # 依存関係のインストール
 npm install
@@ -40,7 +40,7 @@ npm run dev
 このアプリケーションはGitHub Pagesにデプロイされています。
 以下のURLからアクセスできます：
 
-https://[your-username].github.io/typing-practice/
+https://shahin99991.github.io/typing-practice-jp/
 
 ## ライセンス
 

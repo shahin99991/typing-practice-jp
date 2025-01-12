@@ -4,7 +4,7 @@ import path from 'path'
 
 // GitHub Pagesのベースパスを設定
 const base = process.env.GITHUB_PAGES 
-  ? '/typing-practice/' // あなたのリポジトリ名に変更してください
+  ? '/typing-practice-jp/' // リポジトリ名を変更
   : '/'
 
 export default defineConfig({
