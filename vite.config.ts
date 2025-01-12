@@ -1,22 +1,12 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import path from 'path'
 
-// GitHub Pagesのベースパスを設定
-const base = process.env.GITHUB_PAGES 
-  ? '/typing-practice-jp/' // リポジトリ名を変更
-  : '/'
-
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: base,
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
-  server: {
-    port: 3000,
-    open: true,
-  },
+  base: process.env.GITHUB_PAGES ? '/typing-practice-jp/' : '/',
+  build: {
+    outDir: 'dist',
+    sourcemap: true
+  }
 }) 
