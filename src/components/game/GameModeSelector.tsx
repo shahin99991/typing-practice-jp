@@ -1,64 +1,37 @@
-import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../store'
-import { setGameMode, setDifficulty } from '../../store/typingSlice'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { setDifficulty } from '../../store/typingSlice';
+import { RootState } from '../../store';
 
-const GameModeSelector = () => {
-  const dispatch = useDispatch()
-  const { gameMode, difficulty, isGameActive } = useSelector(
-    (state: RootState) => state.typing
-  )
+export const GameModeSelector: React.FC = () => {
+  const dispatch = useDispatch();
+  const difficulty = useSelector((state: RootState) => state.typing.difficulty);
+  const isGameActive = useSelector((state: RootState) => state.typing.isGameActive);
 
-  const handleGameModeChange = (
-    _: React.MouseEvent<HTMLElement>,
-    newMode: 'timeAttack' | 'scoreAttack' | 'endless' | null
-  ) => {
-    if (newMode && !isGameActive) {
-      dispatch(setGameMode(newMode))
+  const handleDifficultyChange = (event: any) => {
+    if (!isGameActive) {
+      dispatch(setDifficulty(event.target.value));
     }
-  }
-
-  const handleDifficultyChange = (
-    _: React.MouseEvent<HTMLElement>,
-    newDifficulty: 'beginner' | 'intermediate' | 'advanced' | null
-  ) => {
-    if (newDifficulty && !isGameActive) {
-      dispatch(setDifficulty(newDifficulty))
-    }
-  }
+  };
 
   return (
-    <Box sx={{ mb: 4 }}>
-      <Typography variant="h6" gutterBottom>
-        ゲームモード
-      </Typography>
-      <ToggleButtonGroup
-        value={gameMode}
-        exclusive
-        onChange={handleGameModeChange}
-        disabled={isGameActive}
-        sx={{ mb: 2 }}
-      >
-        <ToggleButton value="timeAttack">タイムアタック</ToggleButton>
-        <ToggleButton value="scoreAttack">スコアアタック</ToggleButton>
-        <ToggleButton value="endless">エンドレス</ToggleButton>
-      </ToggleButtonGroup>
-
-      <Typography variant="h6" gutterBottom>
-        難易度
-      </Typography>
-      <ToggleButtonGroup
-        value={difficulty}
-        exclusive
-        onChange={handleDifficultyChange}
-        disabled={isGameActive}
-      >
-        <ToggleButton value="beginner">初級</ToggleButton>
-        <ToggleButton value="intermediate">中級</ToggleButton>
-        <ToggleButton value="advanced">上級</ToggleButton>
-      </ToggleButtonGroup>
+    <Box sx={{ minWidth: 200, mb: 2 }}>
+      <FormControl fullWidth>
+        <InputLabel id="difficulty-select-label">難易度</InputLabel>
+        <Select
+          labelId="difficulty-select-label"
+          id="difficulty-select"
+          value={difficulty}
+          label="難易度"
+          onChange={handleDifficultyChange}
+          disabled={isGameActive}
+        >
+          <MenuItem value="beginner">初級</MenuItem>
+          <MenuItem value="intermediate">中級</MenuItem>
+          <MenuItem value="advanced">上級</MenuItem>
+        </Select>
+      </FormControl>
     </Box>
-  )
-}
-
-export default GameModeSelector 
+  );
+}; 
