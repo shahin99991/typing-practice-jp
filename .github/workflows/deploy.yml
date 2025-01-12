@@ -7,7 +7,7 @@ on:
 
 # GitHub Pagesへの書き込み権限を設定
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -30,14 +30,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+          cache: 'npm'
 
       - name: Install Dependencies
         run: npm install
 
       - name: Build
-        run: |
-          export GITHUB_PAGES=true
-          npm run build
+        run: npm run build
+        env:
+          GITHUB_PAGES: true
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
@@ -45,8 +46,10 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './dist'
+          path: dist
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2 
+        uses: actions/deploy-pages@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} 
